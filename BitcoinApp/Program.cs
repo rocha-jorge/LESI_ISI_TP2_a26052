@@ -19,7 +19,7 @@ builder.Services.AddApiVersioning(options =>
 
 builder.Services.AddSwaggerGen(options =>
 {
-    options.SwaggerDoc("v1", new OpenApiInfo { Title = "Your API", Version = "v1" });
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = "BitcoinApp", Version = "v1" });
 
     // Add support for XML comments
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -59,7 +59,7 @@ app.MapControllerRoute(
 app.UseSwagger();
 app.UseSwaggerUI(options =>
 {
-    options.SwaggerEndpoint("/swagger/v1/swagger.json", "Your API v1");
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "BitcoinApp v1");
     options.RoutePrefix = string.Empty; // Set the Swagger UI at the root URL
 });
 
