@@ -1,7 +1,6 @@
 ﻿namespace BitcoinApp.Data
 {
-    public class teste
+    public class ApplicationDbContext
     {
-        teste
     }
 }
