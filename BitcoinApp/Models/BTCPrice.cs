@@ -1,11 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace BitcoinApp.Models
+﻿namespace BitcoinApp.Models
 {
     public class BTCPrice
     {
-        [Key] public DateTime BtcTimeStamp { get; set; }
-        public float Price { get; set; }
-
+        public DateTime BtcTimeStamp { get; set; } // Primary key managed in the database
+        public float Price { get; set; }           // The price of Bitcoin
     }
 }
