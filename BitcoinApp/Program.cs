@@ -5,6 +5,7 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc.Versioning;
+using BitcoinApp.Services.Internal;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,6 +41,10 @@ if (string.IsNullOrEmpty(connectionString))
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
+
+// Adding the service
+builder.Services.AddScoped<ITransactionService>(provider =>
+    new TransactionService(connectionString));
 
 var app = builder.Build();
 

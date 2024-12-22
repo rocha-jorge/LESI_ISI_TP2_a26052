@@ -7,4 +7,5 @@
         public string PasswordHash { get; set; }
         public string? Email { get; set; }
         public int IdRole { get; set; }
+    }
 }
