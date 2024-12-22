@@ -32,8 +32,14 @@ builder.Services.AddSwaggerGen(options =>
 // isto é que faz associar a base de dados do appsettings ao application db context.
 // BD -> appsettings -> program.cs -> applicationDBContext (aqui os atributos recebidos são comparados com os dos modelos)
 
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+if (string.IsNullOrEmpty(connectionString))
+{
+    throw new InvalidOperationException("Database connection string is not configured.");
+}
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(connectionString));
 
 var app = builder.Build();
 
