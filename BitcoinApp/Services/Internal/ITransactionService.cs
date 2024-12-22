@@ -10,7 +10,7 @@ namespace BitcoinApp.Services.Internal
         // Get all transactions for a specific user
         Task<IEnumerable<Transaction>> GetUserTransactionsAsync(int userId);
 
-        // Get a transaction by ID
+        // Get a transaction by its ID
         Task<Transaction?> GetTransactionByIdAsync(int transactionId);
 
         // Delete a transaction by ID

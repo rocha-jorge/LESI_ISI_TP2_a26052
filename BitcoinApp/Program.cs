@@ -1,77 +1,68 @@
-using BitcoinApp.Data;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore;
-using System.Reflection;
-using Microsoft.AspNetCore.Mvc.Versioning;
+// Import necessary namespaces for setting up the app and services
 using BitcoinApp.Services.Internal;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Models;
+using System.Reflection;
+//using BitcoinApp.Services.External;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args);  // Creates a builder for your web application
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
+// Add services to the container (dependency injection)
+builder.Services.AddControllersWithViews();  // Enables MVC controllers and views support
+
+// Add API versioning for the API endpoints
 builder.Services.AddApiVersioning(options =>
 {
-    options.DefaultApiVersion = new ApiVersion(1, 0);
-    options.AssumeDefaultVersionWhenUnspecified = true;
-    options.ReportApiVersions = true;
+    options.DefaultApiVersion = new ApiVersion(1, 0);  // Default version for APIs
+    options.AssumeDefaultVersionWhenUnspecified = true;  // Automatically use the default version if no version is specified
+    options.ReportApiVersions = true;  // Make API version information available in response headers
 });
 
+// Configure Swagger for API documentation
 builder.Services.AddSwaggerGen(options =>
 {
-    options.SwaggerDoc("v1", new OpenApiInfo { Title = "BitcoinApp", Version = "v1" });
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = "BitcoinApp", Version = "v1" });  // Setup the API documentation for version 1
 
-    // Add support for XML comments
+    // Enable XML comments for better documentation, useful for API descriptions
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-    options.IncludeXmlComments(xmlPath);
+    options.IncludeXmlComments(xmlPath);  // Include XML comments in Swagger UI
 });
 
-// Config do EF Core
-// isto usa a connection string que temo sdefinida como default connection e uso isto no DBContext quando o chamamos
-// isto é que faz associar a base de dados do appsettings ao application db context.
-// BD -> appsettings -> program.cs -> applicationDBContext (aqui os atributos recebidos são comparados com os dos modelos)
-
+// Configure the database connection using the connection string in appsettings.json
+// You provided the connection string in appsettings.json, so we will just reference it directly.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-if (string.IsNullOrEmpty(connectionString))
+
+// Register a custom service to interact with your database using ADO.NET
+// This service will perform database operations instead of using Entity Framework.
+builder.Services.AddScoped<ITransactionService, TransactionService>(provider =>
+    new TransactionService(connectionString));  // Passing the connection string to the service
+
+var app = builder.Build();  // Build the web application
+
+// Configure the HTTP request pipeline (define how requests are handled)
+if (!app.Environment.IsDevelopment())  // Only use the following for non-development environments (like production)
 {
-    throw new InvalidOperationException("Database connection string is not configured.");
+    app.UseExceptionHandler("/Home/Error");  // Use an error handler for production
+    app.UseHsts();  // HTTP Strict Transport Security (force HTTPS)
 }
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+app.UseHttpsRedirection();  // Redirect HTTP requests to HTTPS
+app.UseStaticFiles();  // Enable serving static files (like images, CSS, JS)
 
-// Adding the service
-builder.Services.AddScoped<ITransactionService>(provider =>
-    new TransactionService(connectionString));
+app.UseRouting();  // Set up routing to map HTTP requests to controllers
 
-var app = builder.Build();
+app.UseAuthorization();  // Enable authorization for routes (checking if the user is allowed)
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
+// This ensures that your API controllers are correctly mapped and routed
+app.MapControllers();
 
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-
-app.UseRouting();
-
-app.UseAuthorization();
-
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-
-app.UseSwagger();
+// Set up Swagger middleware (only in development environment by default)
+app.UseSwagger();  // Enable the Swagger JSON generation endpoint
 app.UseSwaggerUI(options =>
 {
-    options.SwaggerEndpoint("/swagger/v1/swagger.json", "BitcoinApp v1");
-    options.RoutePrefix = string.Empty; // Set the Swagger UI at the root URL
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "BitcoinApp v1");  // Point to the Swagger JSON file for the UI
+    options.RoutePrefix = string.Empty;  // Set Swagger UI to be at the root URL
 });
 
-app.Run();
+app.Run();  // Start the application and handle incoming HTTP requests
