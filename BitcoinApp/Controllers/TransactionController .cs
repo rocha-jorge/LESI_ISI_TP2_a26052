@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using BitcoinApp.Services.Internal;
 using BitcoinApp.Models;
 using BitcoinApp.Services.Internal;
 
