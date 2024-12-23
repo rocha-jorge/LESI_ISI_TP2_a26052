@@ -21,7 +21,7 @@ namespace BitcoinApp.Services.Internal
                 using (var connection = new SqlConnection(_connectionString))
                 {
                     await connection.OpenAsync();
-                    var query = "INSERT INTO Transactions (IdUser, TransactionType, Units, BtcTimeStamp) " +
+                    var query = "INSERT INTO Transaction (IdUser, TransactionType, Units, BtcTimeStamp) " +
                                 "VALUES (@IdUser, @TransactionType, @Units, @BtcTimeStamp)";
                     using (var command = new SqlCommand(query, connection))
                     {
