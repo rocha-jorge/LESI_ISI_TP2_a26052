@@ -3,3 +3,4 @@
 # Ignorar arquivos binários e obj
 bin/
 obj/
+/BitcoinApp.zip
