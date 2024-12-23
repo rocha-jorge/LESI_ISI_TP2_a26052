@@ -14,21 +14,21 @@ namespace BitcoinApp.Services.Internal
         }
 
         // Add a new transaction to the database
-        public async Task AddTransactionAsync(int userId, string transactionType, int units, DateTime btcTimestamp)
+        public async Task AddTransactionAsync(int idUser, string transactionType, int units, DateTime btcTimeStamp)
         {
             try
             {
                 using (var connection = new SqlConnection(_connectionString))
                 {
                     await connection.OpenAsync();
-                    var query = "INSERT INTO Transaction (IdUser, TransactionType, Units, BtcTimeStamp) " +
-                                "VALUES (@IdUser, @TransactionType, @Units, @BtcTimeStamp)";
+                    var query = "INSERT INTO Transaction (idUser, transactionType, units, btcTimeStamp) " +
+                                "VALUES (@idUser, @transactionType, @units, @btcTimeStamp)";
                     using (var command = new SqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@IdUser", userId);
-                        command.Parameters.AddWithValue("@TransactionType", transactionType);
-                        command.Parameters.AddWithValue("@Units", units);
-                        command.Parameters.AddWithValue("@BtcTimeStamp", btcTimestamp);
+                        command.Parameters.AddWithValue("@idUser", idUser);
+                        command.Parameters.AddWithValue("@transactionType", transactionType);
+                        command.Parameters.AddWithValue("@units", units);
+                        command.Parameters.AddWithValue("@btcTimeStamp", btcTimeStamp);
 
                         await command.ExecuteNonQueryAsync();
                     }
@@ -43,17 +43,17 @@ namespace BitcoinApp.Services.Internal
         }
 
         // Get all transactions for a specific user
-        public async Task<IEnumerable<Transaction>> GetUserTransactionsAsync(int userId)
+        public async Task<IEnumerable<Transaction>> GetUserTransactionsAsync(int idUser)
         {
             var transactions = new List<Transaction>();
 
             using (var connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
-                var query = "SELECT * FROM Transactions WHERE IdUser = @IdUser";
+                var query = "SELECT * FROM Transaction WHERE idUser = @idUser";
                 using (var command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@IdUser", userId);
+                    command.Parameters.AddWithValue("@idUser", idUser);
 
                     using (var reader = await command.ExecuteReaderAsync())
                     {
@@ -61,11 +61,11 @@ namespace BitcoinApp.Services.Internal
                         {
                             transactions.Add(new Transaction
                             {
-                                IdTransaction = reader.GetInt32(0),
-                                IdUser = reader.GetInt32(1),
-                                TransactionType = reader.GetString(2),
-                                Units = reader.GetInt32(3),
-                                BtcTimeStamp = reader.GetDateTime(4)
+                                idTransaction = reader.GetInt32(0),
+                                idUser = reader.GetInt32(1),
+                                transactionType = reader.GetString(2),
+                                units = reader.GetInt32(3),
+                                btcTimeStamp = reader.GetDateTime(4)
                             });
                         }
                     }
@@ -76,17 +76,17 @@ namespace BitcoinApp.Services.Internal
         }
 
         // Get a transaction by its ID
-        public async Task<Transaction?> GetTransactionByIdAsync(int transactionId)
+        public async Task<Transaction?> GetTransactionByIdAsync(int idTransaction)
         {
             Transaction? transaction = null;
 
             using (var connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
-                var query = "SELECT * FROM Transactions WHERE IdTransaction = @IdTransaction";
+                var query = "SELECT * FROM Transaction WHERE idTransaction = @idTransaction";
                 using (var command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@IdTransaction", transactionId);
+                    command.Parameters.AddWithValue("@idTransaction", idTransaction);
 
                     using (var reader = await command.ExecuteReaderAsync())
                     {
@@ -94,11 +94,11 @@ namespace BitcoinApp.Services.Internal
                         {
                             transaction = new Transaction
                             {
-                                IdTransaction = reader.GetInt32(0),
-                                IdUser = reader.GetInt32(1),
-                                TransactionType = reader.GetString(2),
-                                Units = reader.GetInt32(3),
-                                BtcTimeStamp = reader.GetDateTime(4)
+                                idTransaction = reader.GetInt32(0),
+                                idUser = reader.GetInt32(1),
+                                transactionType = reader.GetString(2),
+                                units = reader.GetInt32(3),
+                                btcTimeStamp = reader.GetDateTime(4)
                             };
                         }
                     }
@@ -109,15 +109,15 @@ namespace BitcoinApp.Services.Internal
         }
 
         // Delete a transaction by ID
-        public async Task DeleteTransactionAsync(int transactionId)
+        public async Task DeleteTransactionAsync(int idTransaction)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
-                var query = "DELETE FROM Transactions WHERE IdTransaction = @IdTransaction";
+                var query = "DELETE FROM Transaction WHERE idTransaction = @idTransaction";
                 using (var command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@IdTransaction", transactionId);
+                    command.Parameters.AddWithValue("@idTransaction", idTransaction);
 
                     await command.ExecuteNonQueryAsync();
                 }
@@ -125,19 +125,19 @@ namespace BitcoinApp.Services.Internal
         }
 
         // Update a transaction by ID
-        public async Task UpdateTransactionAsync(int transactionId, string transactionType, int units, DateTime btcTimestamp)
+        public async Task UpdateTransactionAsync(int idTransaction, string transactionType, int units, DateTime btcTimeStamp)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
-                var query = "UPDATE Transactions SET TransactionType = @TransactionType, Units = @Units, BtcTimeStamp = @BtcTimeStamp " +
-                            "WHERE IdTransaction = @IdTransaction";
+                var query = "UPDATE Transaction SET transactionType = @transactionType, Units = @units, btcTimeStamp = @btcTimeStamp " +
+                            "WHERE idTransaction = @idTransaction";
                 using (var command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@IdTransaction", transactionId);
-                    command.Parameters.AddWithValue("@TransactionType", transactionType);
-                    command.Parameters.AddWithValue("@Units", units);
-                    command.Parameters.AddWithValue("@BtcTimeStamp", btcTimestamp);
+                    command.Parameters.AddWithValue("@idTransaction", idTransaction);
+                    command.Parameters.AddWithValue("@transactionType", transactionType);
+                    command.Parameters.AddWithValue("@units", units);
+                    command.Parameters.AddWithValue("@btcTimeStamp", btcTimeStamp);
 
                     await command.ExecuteNonQueryAsync();
                 }

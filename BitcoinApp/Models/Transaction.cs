@@ -2,10 +2,10 @@
 {
     public class Transaction
     {
-        public int IdTransaction { get; set; }
-        public int IdUser { get; set; }
-        public string TransactionType { get; set; }
-        public int Units { get; set; }
-        public DateTime BtcTimeStamp { get; set; }
+        public int idTransaction { get; set; }
+        public int idUser { get; set; }
+        public string transactionType { get; set; }
+        public int units { get; set; }
+        public DateTime btcTimeStamp { get; set; }
     }
 }

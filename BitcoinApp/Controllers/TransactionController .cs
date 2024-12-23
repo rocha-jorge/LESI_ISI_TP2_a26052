@@ -35,8 +35,8 @@ namespace BitcoinApp.Controllers
                 return BadRequest();
             }
 
-            await _transactionService.AddTransactionAsync(transaction.IdUser, transaction.TransactionType, transaction.Units, transaction.BtcTimeStamp);
-            return CreatedAtAction(nameof(GetTransaction), new { id = transaction.IdTransaction }, transaction);
+            await _transactionService.AddTransactionAsync(transaction.IdUser, transaction.transactionType, transaction.Units, transaction.btcTimeStamp);
+            return CreatedAtAction(nameof(GetTransaction), new { id = transaction.idTransaction }, transaction);
         }
     }
 }

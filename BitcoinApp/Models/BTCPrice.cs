@@ -2,7 +2,7 @@
 {
     public class BTCPrice
     {
-        public DateTime BtcTimeStamp { get; set; } // Primary key managed in the database
-        public float Price { get; set; }           // The price of Bitcoin
+        public DateTime btcTimeStamp { get; set; } // Primary key managed in the database
+        public float price { get; set; }           // The price of Bitcoin
     }
 }

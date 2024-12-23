@@ -3,9 +3,10 @@
     public class Token
     {
         
-        public int IdToken { get; set; }
-        public int IdUser { get; set; }
-        public string TokenString { get; set; }
-        public DateTime Expiration { get; set; }
+        public int idToken { get; set; }
+        public int idUser { get; set; }
+        public string tokenString { get; set; }
+        public DateTime expiration { get; set; }
+        public bool revoked { get; set; }
     }
 }
