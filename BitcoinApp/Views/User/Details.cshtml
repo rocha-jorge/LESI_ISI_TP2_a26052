@@ -12,33 +12,33 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.UserName)
+            @Html.DisplayNameFor(model => model.username)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.UserName)
+            @Html.DisplayFor(model => model.username)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PasswordHash)
+            @Html.DisplayNameFor(model => model.passwordHash)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PasswordHash)
+            @Html.DisplayFor(model => model.passwordHash)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
+            @Html.DisplayNameFor(model => model.email)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Email)
+            @Html.DisplayFor(model => model.email)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.IdRole)
+            @Html.DisplayNameFor(model => model.idRole)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.IdRole)
+            @Html.DisplayFor(model => model.idRole)
         </dd>
     </dl>
 
     <form asp-action="Delete">
-        <input type="hidden" asp-for="IdUser" />
+        <input type="hidden" asp-for="idUser" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-action="Index">Back to List</a>
     </form>
