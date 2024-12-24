@@ -54,6 +54,10 @@ namespace BitcoinApp.Services.Internal
                 {
                     await connection.OpenAsync();
                     var query = "SELECT * FROM Transaction WHERE idTransaction = @idTransaction";
+
+                    // Log the query and parameters
+                    Console.WriteLine($"Executing query: {query} with idTransaction = {idTransaction}");
+
                     using (var command = new SqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@idTransaction", idTransaction);
@@ -65,10 +69,10 @@ namespace BitcoinApp.Services.Internal
                                 transaction = new Transaction
                                 {
                                     idTransaction = reader.GetInt32(0),
-                                    idUser = reader.GetInt32(1),
-                                    transactionType = reader.GetString(2),
-                                    units = reader.GetInt32(3),
-                                    btcTimeStamp = reader.GetDateTime(4)
+                                    //idUser = reader.GetInt32(1),
+                                    //transactionType = reader.GetString(2),
+                                    //units = reader.GetInt32(3),
+                                   // btcTimeStamp = reader.GetDateTime(4)
                                 };
                             }
                         }
@@ -88,5 +92,52 @@ namespace BitcoinApp.Services.Internal
 
             return transaction;
         }
+
+
+        public async Task<IEnumerable<Transaction>> GetTransactionsByUserIdAsync(int idUser)
+        {
+            var transactions = new List<Transaction>();
+
+            try
+            {
+                using (var connection = new SqlConnection(_connectionString))
+                {
+                    await connection.OpenAsync();
+                    var query = "SELECT * FROM Transaction WHERE idUser = @idUser";  // Query for all transactions by user ID
+
+                    using (var command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@idUser", idUser);
+
+                        using (var reader = await command.ExecuteReaderAsync())
+                        {
+                            while (await reader.ReadAsync())
+                            {
+                                transactions.Add(new Transaction
+                                {
+                                    idTransaction = reader.GetInt32(0),
+                                    idUser = reader.GetInt32(1),
+                                    transactionType = reader.GetString(2),
+                                    units = reader.GetInt32(3),
+                                    btcTimeStamp = reader.GetDateTime(4)
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine($"SQL Error: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Unexpected Error: {ex.Message}");
+            }
+
+            return transactions;
+        }
+
+
     }
 }
