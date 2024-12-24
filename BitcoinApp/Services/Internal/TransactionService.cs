@@ -69,10 +69,10 @@ namespace BitcoinApp.Services.Internal
                                 transaction = new Transaction
                                 {
                                     idTransaction = reader.GetInt32(0),
-                                    //idUser = reader.GetInt32(1),
-                                    //transactionType = reader.GetString(2),
-                                    //units = reader.GetInt32(3),
-                                   // btcTimeStamp = reader.GetDateTime(4)
+                                    idUser = reader.GetInt32(1),
+                                    transactionType = reader.GetString(2),
+                                    units = reader.GetInt32(3),
+                                    btcTimeStamp = reader.GetDateTime(4)
                                 };
                             }
                         }
@@ -103,7 +103,7 @@ namespace BitcoinApp.Services.Internal
                 using (var connection = new SqlConnection(_connectionString))
                 {
                     await connection.OpenAsync();
-                    var query = "SELECT * FROM Transaction WHERE idUser = @idUser";  // Query for all transactions by user ID
+                    var query = "SELECT * FROM [Transaction] WHERE idUser = @idUser";  // Query for all transactions by user ID
 
                     using (var command = new SqlCommand(query, connection))
                     {

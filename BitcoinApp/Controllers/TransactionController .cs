@@ -26,16 +26,18 @@ namespace BitcoinApp.Controllers
             return Ok(transaction);
         }
 
-        // New endpoint to get all transactions for a user
         [HttpGet("user/{idUser}")]
         public async Task<ActionResult<IEnumerable<Transaction>>> GetTransactionsByUserId(int idUser)
         {
+            Console.WriteLine($"Received GET request for user with idUser = {idUser}");
             var transactions = await _transactionService.GetTransactionsByUserIdAsync(idUser);
             if (transactions == null || !transactions.Any())
             {
-                return NotFound();  // Return 404 if no transactions found
+                Console.WriteLine($"No transactions found for idUser = {idUser}");
+                return NotFound();
             }
-            return Ok(transactions);  // Return the list of transactions
+            Console.WriteLine($"Found {transactions.Count()} transactions for idUser = {idUser}");
+            return Ok(transactions);
         }
 
         [HttpPost]
