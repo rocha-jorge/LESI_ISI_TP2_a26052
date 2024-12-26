@@ -1,16 +1,12 @@
-// Import necessary namespaces for setting up the app and services
 using BitcoinApp.Services.Internal;
-using BitcoinApp.Services.SOAP;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
-using CoreWCF;
-using CoreWCF.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container (dependency injection)
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllers(); // Only need this if you're using API controllers, not MVC
 
 // Add API versioning for the API endpoints
 builder.Services.AddApiVersioning(options =>
@@ -31,18 +27,14 @@ builder.Services.AddSwaggerGen(options =>
 
 // Configure the database connection using the connection string in appsettings.json
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+// Add Restful Services
 builder.Services.AddScoped<ITransactionService, TransactionService>(provider =>
     new TransactionService(connectionString));
 
-// Add services to the container (dependency injection)
-builder.Services.AddControllersWithViews();
-
-// Register CoreWCF for SOAP support
-builder.Services.AddCoreWCF().AddServiceModelServices();  // Ensure CoreWCF is added
-
 var app = builder.Build();
 
-// Configure the HTTP request pipeline (define how requests are handled)
+// Configure the HTTP request pipeline
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -61,13 +53,6 @@ app.UseSwaggerUI(options =>
 {
     options.SwaggerEndpoint("/swagger/v1/swagger.json", "BitcoinApp v1");
     options.RoutePrefix = string.Empty;
-});
-
-// Map the SOAP service
-app.UseServiceModel(builder =>
-{
-    builder.AddService<TransactionSoapService>()
-           .AddServiceEndpoint<TransactionSoapService, ITransactionSoapService>(new BasicHttpBinding(), "/TransactionService");
 });
 
 app.Run();
