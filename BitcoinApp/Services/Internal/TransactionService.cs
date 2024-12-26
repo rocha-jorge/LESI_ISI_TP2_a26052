@@ -21,7 +21,7 @@ namespace BitcoinApp.Services.Internal
                 using (var connection = new SqlConnection(_connectionString))
                 {
                     await connection.OpenAsync();
-                    var query = "INSERT INTO [Transaction] (idUser, transactionType, units, btcTimeStamp) " +
+                    var query = "INSERT INTO Transaction (idUser, transactionType, units, btcTimeStamp) " +
                                 "VALUES (@idUser, @transactionType, @units, @btcTimeStamp)";
                     using (var command = new SqlCommand(query, connection))
                     {
@@ -53,7 +53,7 @@ namespace BitcoinApp.Services.Internal
                 using (var connection = new SqlConnection(_connectionString))
                 {
                     await connection.OpenAsync();
-                    var query = "SELECT * FROM [Transaction] WHERE idTransaction = @idTransaction";
+                    var query = "SELECT * FROM Transaction WHERE idTransaction = @idTransaction";
 
                     // Log the query and parameters
                     Console.WriteLine($"Executing query: {query} with idTransaction = {idTransaction}");
