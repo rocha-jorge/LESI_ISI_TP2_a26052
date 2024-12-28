@@ -51,5 +51,45 @@ namespace BitcoinApp.Controllers
             await _transactionService.AddTransactionAsync(transaction.idUser, transaction.transactionType, transaction.units, transaction.btcTimeStamp);
             return CreatedAtAction(nameof(GetTransaction), new { id = transaction.idTransaction }, transaction);
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateTransaction(int id, [FromBody] Transaction updatedTransaction)
+        {
+            if (updatedTransaction == null || updatedTransaction.idTransaction != id)
+            {
+                return BadRequest("Invalid transaction data.");
+            }
+
+            var success = await _transactionService.UpdateTransactionAsync(updatedTransaction);
+
+            if (!success)
+            {
+                return NotFound($"Transaction with ID {id} not found.");
+            }
+
+            return NoContent(); // 204 No Content
+        }
+
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteTransaction(int id)
+        {
+            if (id == null)
+            {
+                return BadRequest("Invalid transaction data.");
+            }
+
+            var success = await _transactionService.DeleteTransactionAsync(id);
+
+            if (!success)
+            {
+                return NotFound($"Transaction with ID {id} not found.");
+            }
+
+            return NoContent(); // 204 No Content
+        }
     }
+
+
+
 }

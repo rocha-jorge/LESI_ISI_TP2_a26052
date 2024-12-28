@@ -138,6 +138,69 @@ namespace BitcoinApp.Services.Internal
             return transactions;
         }
 
+        public async Task<bool> UpdateTransactionAsync(Transaction updatedTransaction)
+        {
+            try
+            {
+                using (var connection = new SqlConnection(_connectionString))
+                {
+                    await connection.OpenAsync();
+                    var query = "UPDATE [Transaction] SET idUser = @idUser, transactionType = @transactionType, units = @units, btcTimeStamp = @btcTimeStamp WHERE idTransaction = @idTransaction";
+
+                    using (var command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@idTransaction", updatedTransaction.idTransaction);
+                        command.Parameters.AddWithValue("@idUser", updatedTransaction.idUser);
+                        command.Parameters.AddWithValue("@transactionType", updatedTransaction.transactionType);
+                        command.Parameters.AddWithValue("@units", updatedTransaction.units);
+                        command.Parameters.AddWithValue("@btcTimeStamp", updatedTransaction.btcTimeStamp);
+
+                        int rowsAffected = await command.ExecuteNonQueryAsync();
+                        return rowsAffected > 0;
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine($"SQL Error: {ex.Message}");
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Unexpected Error: {ex.Message}");
+                throw;
+            }
+        }
+
+        public async Task<bool> DeleteTransactionAsync(int idTransaction)
+        {
+            try
+            {
+                using (var connection = new SqlConnection(_connectionString))
+                {
+                    await connection.OpenAsync();
+                    var query = "DELETE FROM [Transaction] WHERE idTransaction = @idTransaction";
+
+                    using (var command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@idTransaction", idTransaction);
+
+                        int rowsAffected = await command.ExecuteNonQueryAsync();
+                        return rowsAffected > 0;
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine($"SQL Error: {ex.Message}");
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Unexpected Error: {ex.Message}");
+                throw;
+            }
+        }
 
     }
 }
