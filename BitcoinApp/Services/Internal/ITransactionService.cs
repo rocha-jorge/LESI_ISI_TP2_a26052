@@ -4,19 +4,10 @@ namespace BitcoinApp.Services.Internal
 {
     public interface ITransactionService
     {
-        // Add a new transaction to the database
         Task AddTransactionAsync(int idUser, string transactionType, int units, DateTime btcTimeStamp);
-
-        // Get a transaction by its ID
         Task<Transaction?> GetTransactionByIdAsync(int idTransaction);
-
-        // Get all transactions for a specific user
-        Task<IEnumerable<Transaction>> GetTransactionsByUserIdAsync(int idUser);  // New method to fetch transactions by user ID
-
-        // Update: Update an existing transaction
+        Task<IEnumerable<Transaction>> GetTransactionsByUserIdAsync(int idUser);
         Task<bool> UpdateTransactionAsync(Transaction updatedTransaction);
-
-        // Delete: Delete a transaction by its ID
         Task<bool> DeleteTransactionAsync(int idTransaction);
     }
 }

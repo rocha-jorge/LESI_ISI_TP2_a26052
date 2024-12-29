@@ -17,7 +17,7 @@ namespace BitcoinApp.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Policy = "AdminOrGuest")]
         public async Task<ActionResult<Transaction>> GetTransaction(int id)
         {
             var transaction = await _transactionService.GetTransactionByIdAsync(id);
@@ -29,16 +29,15 @@ namespace BitcoinApp.Controllers
         }
 
         [HttpGet("user/{idUser}")]
+        [Authorize(Policy = "AdminOrGuest")]
+
         public async Task<ActionResult<IEnumerable<Transaction>>> GetTransactionsByUserId(int idUser)
         {
-            Console.WriteLine($"Received GET request for user with idUser = {idUser}");
             var transactions = await _transactionService.GetTransactionsByUserIdAsync(idUser);
             if (transactions == null || !transactions.Any())
             {
-                Console.WriteLine($"No transactions found for idUser = {idUser}");
                 return NotFound();
             }
-            Console.WriteLine($"Found {transactions.Count()} transactions for idUser = {idUser}");
             return Ok(transactions);
         }
 
@@ -55,6 +54,7 @@ namespace BitcoinApp.Controllers
         /// </remarks>
 
         [HttpPost]
+        [Authorize(Policy = "AdminOrGuest")]
         public async Task<ActionResult> AddTransaction([FromBody] Transaction transaction)
         {
             if (transaction == null)
@@ -67,6 +67,7 @@ namespace BitcoinApp.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> UpdateTransaction(int id, [FromBody] Transaction updatedTransaction)
         {
             if (updatedTransaction == null || updatedTransaction.idTransaction != id)
@@ -81,11 +82,12 @@ namespace BitcoinApp.Controllers
                 return NotFound($"Transaction with ID {id} not found.");
             }
 
-            return NoContent(); // 204 No Content
+            return NoContent();
         }
 
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> DeleteTransaction(int id)
         {
             var success = await _transactionService.DeleteTransactionAsync(id);
@@ -95,7 +97,7 @@ namespace BitcoinApp.Controllers
                 return NotFound($"Transaction with ID {id} not found.");
             }
 
-            return NoContent(); // 204 No Content
+            return NoContent();
         }
     }
 }

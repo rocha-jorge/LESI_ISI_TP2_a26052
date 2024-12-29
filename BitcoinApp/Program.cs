@@ -65,14 +65,12 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 
-
 // Configure the database connection using the connection string in appsettings.json
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 // Add Restful Services
 builder.Services.AddScoped<ITransactionService, TransactionService>(provider =>
     new TransactionService(connectionString));
-
 
 // Configurar autenticação JWT
 builder.Services.AddAuthentication(x =>
@@ -92,15 +90,14 @@ builder.Services.AddAuthentication(x =>
     };
 });
 
-//mais simples
 builder.Services.AddAuthorization(); // Add default authorization services
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("Admin", policy => policy.RequireRole("admin"));
     options.AddPolicy("Guest", policy => policy.RequireRole("guest"));
-    options.AddPolicy("GuestPolicy", policy =>
+    options.AddPolicy("AdminOrGuest", policy =>
                                 policy.RequireAssertion(context =>
-    context.User.IsInRole("Admin") || context.User.IsInRole("Guest")));
+    context.User.IsInRole("admin") || context.User.IsInRole("guest")));
 });
 
 builder.Services.AddTransient<AuthService>();

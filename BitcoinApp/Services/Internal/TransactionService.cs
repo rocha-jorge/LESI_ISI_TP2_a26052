@@ -13,7 +13,6 @@ namespace BitcoinApp.Services.Internal
             _connectionString = connectionString;
         }
 
-        // Add a new transaction to the database
         public async Task AddTransactionAsync(int idUser, string transactionType, int units, DateTime btcTimeStamp)
         {
             try
@@ -36,14 +35,10 @@ namespace BitcoinApp.Services.Internal
             }
             catch (SqlException ex)
             {
-                // Log the exception or handle it accordingly
                 Console.WriteLine($"Error occurred: {ex.Message}");
-                throw;  // Rethrow the exception or handle as needed
+                throw;
             }
         }
-
-
-        // Get a transaction by its ID
         public async Task<Transaction?> GetTransactionByIdAsync(int idTransaction)
         {
             Transaction? transaction = null;
@@ -54,9 +49,6 @@ namespace BitcoinApp.Services.Internal
                 {
                     await connection.OpenAsync();
                     var query = "SELECT * FROM [Transaction] WHERE idTransaction = @idTransaction";
-
-                    // Log the query and parameters
-                    Console.WriteLine($"Executing query: {query} with idTransaction = {idTransaction}");
 
                     using (var command = new SqlCommand(query, connection))
                     {
@@ -82,12 +74,10 @@ namespace BitcoinApp.Services.Internal
             catch (SqlException ex)
             {
                 Console.WriteLine($"SQL Error: {ex.Message}");
-                // Log the exception here or use a logging framework
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Unexpected Error: {ex.Message}");
-                // Log the exception here or use a logging framework
             }
 
             return transaction;
@@ -103,7 +93,7 @@ namespace BitcoinApp.Services.Internal
                 using (var connection = new SqlConnection(_connectionString))
                 {
                     await connection.OpenAsync();
-                    var query = "SELECT * FROM [Transaction] WHERE idUser = @idUser";  // Query for all transactions by user ID
+                    var query = "SELECT * FROM [Transaction] WHERE idUser = @idUser";
 
                     using (var command = new SqlCommand(query, connection))
                     {

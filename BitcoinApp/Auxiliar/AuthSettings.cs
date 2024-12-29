@@ -1,11 +1,9 @@
-﻿
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 
 namespace BitcoinApp.Auxiliar
 {
     public class AuthSettings
     {
-        //This key must be preserved outside the code
         public static string PrivateKey { get; set; } = GeraKey(256);
 
         public static string GeraKey(int nBytes)
