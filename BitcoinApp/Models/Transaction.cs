@@ -1,4 +1,6 @@
-﻿namespace BitcoinApp.Models
+﻿using Swashbuckle.AspNetCore.Annotations;
+
+namespace BitcoinApp.Models
 {
     /// <summary>
     /// Represents a transaction in the BitcoinApp system.
@@ -24,7 +26,6 @@
         /// Number of units involved in the transaction.
         /// </summary>
         public int units { get; set; }
-
 
         /// <summary>
         /// Timestamp for the transaction in ISO 8601 format.
