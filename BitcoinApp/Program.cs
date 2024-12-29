@@ -19,11 +19,16 @@ builder.Services.AddApiVersioning(options =>
 // Configure Swagger for API documentation
 builder.Services.AddSwaggerGen(options =>
 {
+    // Include XML comments (ensure XML documentation file is generated in project properties)
     options.SwaggerDoc("v1", new OpenApiInfo { Title = "BitcoinApp", Version = "v1" });
+
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     options.IncludeXmlComments(xmlPath);
+
+    options.EnableAnnotations(); // Enable annotations for Swagger
 });
+
 
 // Configure the database connection using the connection string in appsettings.json
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -35,8 +40,18 @@ builder.Services.AddScoped<ITransactionService, TransactionService>(provider =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "BitcoinApp v1");
+        options.RoutePrefix = string.Empty; // Swagger UI at root
+    });
+}
+else
+{
+    // Use custom error handling in production
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
@@ -49,10 +64,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.UseSwagger();
-app.UseSwaggerUI(options =>
-{
-    options.SwaggerEndpoint("/swagger/v1/swagger.json", "BitcoinApp v1");
-    options.RoutePrefix = string.Empty;
-});
 
 app.Run();

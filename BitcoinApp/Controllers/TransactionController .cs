@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using BitcoinApp.Models;
 using BitcoinApp.Services.Internal;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace BitcoinApp.Controllers
 {
@@ -39,6 +40,18 @@ namespace BitcoinApp.Controllers
             Console.WriteLine($"Found {transactions.Count()} transactions for idUser = {idUser}");
             return Ok(transactions);
         }
+
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST
+        ///     {
+        ///        "idUser": 1,
+        ///        "transactionType": "Sell",
+        ///        "units": 7,
+        ///        "btcTimeStamp": "2024-12-22T23:39:30.700"
+        ///     }
+        /// </remarks>
 
         [HttpPost]
         public async Task<ActionResult> AddTransaction([FromBody] Transaction transaction)
