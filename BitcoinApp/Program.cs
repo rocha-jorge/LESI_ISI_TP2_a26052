@@ -22,18 +22,48 @@ builder.Services.AddApiVersioning(options =>
     options.ReportApiVersions = true;
 });
 
-// Configure Swagger for API documentation
 builder.Services.AddSwaggerGen(options =>
 {
-    // Include XML comments (ensure XML documentation file is generated in project properties)
+    // Swagger document settings
     options.SwaggerDoc("v1", new OpenApiInfo { Title = "BitcoinApp", Version = "v1" });
 
+    // Add JWT Authentication
+    var securityScheme = new OpenApiSecurityScheme
+    {
+        Name = "JWT Authentication",
+        Description = "Enter your JWT token in this field",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT"
+    };
+    options.AddSecurityDefinition("Bearer", securityScheme);
+
+    var securityRequirement = new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] { }
+        }
+    };
+    options.AddSecurityRequirement(securityRequirement);
+
+    // Enable XML comments (ensure XML documentation file is generated in project properties)
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     options.IncludeXmlComments(xmlPath);
 
-    options.EnableAnnotations(); // Enable annotations for Swagger
+    // Enable annotations for Swagger
+    options.EnableAnnotations();
 });
+
 
 
 // Configure the database connection using the connection string in appsettings.json
@@ -75,43 +105,8 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.AddTransient<AuthService>();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
-    //c.SwaggerDoc("v1", new OpenApiInfo { Title = "BitcoinApp", Version = "v1" });
-
-    var securityScheme = new OpenApiSecurityScheme
-    {
-        Name = "JWT Authentication",
-        Description = "Enter your JWT token in this field",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.Http,
-        Scheme = "bearer",
-        BearerFormat = "JWT"
-    };
-
-    c.AddSecurityDefinition("Bearer", securityScheme);
-
-    var securityRequirement = new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            new string[] {}
-        }
-    };
-
-    c.AddSecurityRequirement(securityRequirement);
-});
-
 
 var app = builder.Build();
-
 
 // Enable Swagger
 app.UseSwagger();
