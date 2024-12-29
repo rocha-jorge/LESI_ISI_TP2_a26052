@@ -1,5 +1,6 @@
 ﻿using BitcoinApp.Models;
 using BitcoinApp.Services.Internal;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BitcoinApp.Controllers
@@ -16,6 +17,7 @@ namespace BitcoinApp.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Policy = "Admin")]
         public async Task<ActionResult<Transaction>> GetTransaction(int id)
         {
             var transaction = await _transactionService.GetTransactionByIdAsync(id);
