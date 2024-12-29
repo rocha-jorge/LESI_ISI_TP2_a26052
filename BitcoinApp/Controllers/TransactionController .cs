@@ -88,11 +88,6 @@ namespace BitcoinApp.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTransaction(int id)
         {
-            if (id == null)
-            {
-                return BadRequest("Invalid transaction data.");
-            }
-
             var success = await _transactionService.DeleteTransactionAsync(id);
 
             if (!success)
@@ -103,7 +98,4 @@ namespace BitcoinApp.Controllers
             return NoContent(); // 204 No Content
         }
     }
-
-
-
 }
