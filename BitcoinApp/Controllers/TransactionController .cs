@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using BitcoinApp.Models;
+﻿using BitcoinApp.Models;
 using BitcoinApp.Services.Internal;
-using Swashbuckle.AspNetCore.Annotations;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BitcoinApp.Controllers
 {

@@ -1,7 +1,4 @@
-﻿using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.Annotations;
-
-namespace BitcoinApp.Models
+﻿namespace BitcoinApp.Models
 {
     /// <summary>
     /// Represents a transaction in the BitcoinApp system.

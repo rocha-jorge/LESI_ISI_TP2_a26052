@@ -39,19 +39,17 @@ builder.Services.AddScoped<ITransactionService, TransactionService>(provider =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline
-if (app.Environment.IsDevelopment())
+// Enable Swagger
+app.UseSwagger();
+app.UseSwaggerUI(options =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(options =>
-    {
-        options.SwaggerEndpoint("/swagger/v1/swagger.json", "BitcoinApp v1");
-        options.RoutePrefix = string.Empty; // Swagger UI at root
-    });
-}
-else
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "BitcoinApp v1");
+    options.RoutePrefix = string.Empty; // Swagger UI at root
+});
+
+// Enable production-specific error handling
+if (!app.Environment.IsDevelopment())
 {
-    // Use custom error handling in production
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
