@@ -21,7 +21,8 @@ namespace BitcoinApp.Services
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = GenerateClaims(userAuth),
-                Expires = DateTime.UtcNow.AddMinutes(15),
+                NotBefore = DateTime.UtcNow.AddDays(-1),
+                Expires = DateTime.UtcNow.AddMonths(3),
                 SigningCredentials = credentials,
             };
 

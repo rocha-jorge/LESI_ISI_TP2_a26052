@@ -4,6 +4,7 @@ using BitcoinApp.Services;
 using BitcoinApp.Services.Internal;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
@@ -132,9 +133,6 @@ app.UseSwagger();
 
 app.MapPost("/Authenticate", (UserAuth userAuth, AuthService authService)
     => authService.GenerateToken(userAuth));
-
-app.MapGet("/Signin", () => "User Authenticated Successfully!")
-    .RequireAuthorization("Admin");
 
 #endregion
 
