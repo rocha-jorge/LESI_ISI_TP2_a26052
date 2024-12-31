@@ -13,7 +13,7 @@ namespace BitcoinApp.Services.Internal
             _connectionString = connectionString;
         }
 
-        public async Task AddTransactionAsync(int idUser, string transactionType, int units, DateTime btcTimeStamp)
+        public async Task AddTransaction(int idUser, string transactionType, int units, DateTime btcTimeStamp)
         {
             try
             {
@@ -39,7 +39,7 @@ namespace BitcoinApp.Services.Internal
                 throw;
             }
         }
-        public async Task<Transaction?> GetTransactionByIdAsync(int idTransaction)
+        public async Task<Transaction?> GetTransactionById(int idTransaction)
         {
             Transaction? transaction = null;
 
@@ -84,7 +84,7 @@ namespace BitcoinApp.Services.Internal
         }
 
 
-        public async Task<IEnumerable<Transaction>> GetTransactionsByUserIdAsync(int idUser)
+        public async Task<IEnumerable<Transaction>> GetTransactionsByUserId(int idUser)
         {
             var transactions = new List<Transaction>();
 
@@ -128,7 +128,7 @@ namespace BitcoinApp.Services.Internal
             return transactions;
         }
 
-        public async Task<bool> UpdateTransactionAsync(Transaction updatedTransaction)
+        public async Task<bool> UpdateTransaction(Transaction updatedTransaction)
         {
             try
             {
@@ -162,7 +162,7 @@ namespace BitcoinApp.Services.Internal
             }
         }
 
-        public async Task<bool> DeleteTransactionAsync(int idTransaction)
+        public async Task<bool> DeleteTransaction(int idTransaction)
         {
             try
             {

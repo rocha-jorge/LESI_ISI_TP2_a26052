@@ -22,7 +22,7 @@ namespace BitcoinApp.Controllers
         [SwaggerOperation(Summary = "Obter informação de uma transação específica. [admin, guest]", Description = "Retorna as informações de uma transação específica, por idTransaction.")]
         public async Task<ActionResult<Transaction>> GetTransaction(int id)
         {
-            var transaction = await _transactionService.GetTransactionByIdAsync(id);
+            var transaction = await _transactionService.GetTransactionById(id);
             if (transaction == null)
             {
                 return NotFound();
@@ -36,7 +36,7 @@ namespace BitcoinApp.Controllers
 
         public async Task<ActionResult<IEnumerable<Transaction>>> GetTransactionsByUserId(int idUser)
         {
-            var transactions = await _transactionService.GetTransactionsByUserIdAsync(idUser);
+            var transactions = await _transactionService.GetTransactionsByUserId(idUser);
             if (transactions == null || !transactions.Any())
             {
                 return NotFound();
@@ -72,7 +72,7 @@ namespace BitcoinApp.Controllers
                 return BadRequest();
             }
 
-            await _transactionService.AddTransactionAsync(transaction.idUser, transaction.transactionType, transaction.units, transaction.btcTimeStamp);
+            await _transactionService.AddTransaction(transaction.idUser, transaction.transactionType, transaction.units, transaction.btcTimeStamp);
             return CreatedAtAction(nameof(GetTransaction), new { id = transaction.idTransaction }, transaction);
         }
 
@@ -95,7 +95,7 @@ namespace BitcoinApp.Controllers
                 return BadRequest("Invalid transaction data.");
             }
 
-            var success = await _transactionService.UpdateTransactionAsync(updatedTransaction);
+            var success = await _transactionService.UpdateTransaction(updatedTransaction);
 
             if (!success)
             {
@@ -112,7 +112,7 @@ namespace BitcoinApp.Controllers
 
         public async Task<IActionResult> DeleteTransaction(int id)
         {
-            var success = await _transactionService.DeleteTransactionAsync(id);
+            var success = await _transactionService.DeleteTransaction(id);
 
             if (!success)
             {
