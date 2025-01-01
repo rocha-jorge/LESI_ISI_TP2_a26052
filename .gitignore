@@ -1,6 +1,6 @@
-.vs/
-bin/
-obj/
-/BitcoinApp.zip
-*.csproj.user
-Program.zip
+BitcoinApp/.vs/
+BitcoinApp/bin/
+BitcoinApp/obj/
+BitcoinApp/BitcoinApp.zip
+BitcoinApp/*.csproj.user
+BitcoinApp/Program.zip
