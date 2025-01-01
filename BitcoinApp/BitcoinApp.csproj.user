@@ -12,6 +12,6 @@
     <WebStackScaffolding_DbContextTypeFullName>BitcoinApp.Data.ApplicationDbContext</WebStackScaffolding_DbContextTypeFullName>
     <WebStackScaffolding_IsAsyncSelected>False</WebStackScaffolding_IsAsyncSelected>
     <WebStackScaffolding_IsViewGenerationSelected>True</WebStackScaffolding_IsViewGenerationSelected>
-    <NameOfLastUsedPublishProfile>C:\Users\ajmr1\OneDrive\Documents\Repos\LESI_ISI_TP2_a26052\BitcoinApp\Properties\PublishProfiles\BitcoinAppISIa26052 - Web Deploy.pubxml</NameOfLastUsedPublishProfile>
+    <NameOfLastUsedPublishProfile>D:\Repos\LESI_ISI_TP2_a26052\BitcoinApp\Properties\PublishProfiles\BitcoinAppISIa26052 - Web Deploy.pubxml</NameOfLastUsedPublishProfile>
   </PropertyGroup>
 </Project>
