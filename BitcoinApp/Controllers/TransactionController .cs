@@ -2,10 +2,7 @@
 using BitcoinApp.Services.Internal;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Win32;
 using Swashbuckle.AspNetCore.Annotations;
-using System.Runtime.ConstrainedExecution;
-using System.Web.Services.Description;
 
 namespace BitcoinApp.Controllers
 {
@@ -77,7 +74,7 @@ namespace BitcoinApp.Controllers
         [HttpPut]
         [Authorize(Policy = "Admin")]
         [SwaggerOperation(
-            Summary = "Atualizar as informações de uma transação. [admin]", 
+            Summary = "Atualizar as informações de uma transação. [admin]",
             Description = @"Permite alterar as informações de uma transação específica existente na BD, por idTransaction.
 
             {
@@ -92,7 +89,7 @@ namespace BitcoinApp.Controllers
         )]
 
         public async Task<IActionResult> UpdateTransaction([FromBody] Transaction updatedTransaction)
-    {
+        {
             if (updatedTransaction == null || updatedTransaction.idTransaction == 0)
             {
                 return BadRequest("Invalid transaction data.");

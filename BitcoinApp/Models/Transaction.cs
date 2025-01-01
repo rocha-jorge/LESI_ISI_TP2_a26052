@@ -1,38 +1,34 @@
-﻿using Swashbuckle.AspNetCore.Annotations;
-
-namespace BitcoinApp.Models
+﻿namespace BitcoinApp.Models
 {
     /// <summary>
-    /// Represents a transaction in the BitcoinApp system.
+    /// Representa uma transação no sistema BitcoinApp.
     /// </summary>
     public class Transaction
     {
         /// <summary>
-        /// Unique identifier for the transaction.
+        /// Identificador único da transação.
         /// </summary>
         public int idTransaction { get; set; }
 
         /// <summary>
-        /// Unique identifier for the user associated with the transaction.
+        /// Identificador único do utilizador associado à transação.
         /// </summary>
         public int idUser { get; set; }
 
         /// <summary>
-        /// Type of transaction (e.g., "Buy" or "Sell").
+        /// Tipo de transação (por exemplo, "buy" ou "sell"). Limitado a quatro caracteres.
         /// </summary>
         public string transactionType { get; set; }
 
         /// <summary>
-        /// Number of units involved in the transaction.
+        /// Número de unidades envolvidas na transação.
         /// </summary>
         public int units { get; set; }
 
         /// <summary>
-        /// Timestamp for the transaction in ISO 8601 format.
-        /// Example: 2024-12-22T23:39:30.700
+        /// Data e hora da transação no formato ISO 8601.
+        /// Exemplo: 2024-12-22T23:39:30.700
         /// </summary>
-        /// 
         public DateTime btcTimeStamp { get; set; }
-
     }
 }
