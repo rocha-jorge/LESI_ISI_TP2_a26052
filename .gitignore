@@ -1,6 +1,6 @@
-# Ignorar a pasta .vs do Visual Studio
 .vs/
-# Ignorar arquivos binários e obj
 bin/
 obj/
 /BitcoinApp.zip
+*.csproj.user
+Program.zip

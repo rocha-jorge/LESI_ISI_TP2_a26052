@@ -2,7 +2,10 @@
 using BitcoinApp.Services.Internal;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Win32;
 using Swashbuckle.AspNetCore.Annotations;
+using System.Runtime.ConstrainedExecution;
+using System.Web.Services.Description;
 
 namespace BitcoinApp.Controllers
 {
@@ -44,26 +47,21 @@ namespace BitcoinApp.Controllers
             return Ok(transactions);
         }
 
-        /// <remarks>
-        /// O idTransaction não deve ser incluido no body:
-        ///
-        ///     {
-        ///        "idUser": 1,
-        ///        "transactionType": "Sell",
-        ///        "units": 7,
-        ///        "btcTimeStamp": "2024-12-22T23:39:30.700"
-        ///     }
-        /// O timestamp tem de ser o seguinte:
-        ///
-        ///     {
-        ///        "btcTimeStamp": "2024-12-22T23:39:30.700"
-        ///     }
-        /// Por ser o único registo válido da entidade btcTimeStamp na BD.
-        /// </remarks>
-
         [HttpPost]
         [Authorize(Policy = "AdminOrGuest")]
-        [SwaggerOperation(Summary = "Registar uma nova transação. [admin, guest]", Description = "Permite escrever uma nova Transaction na BD.")]
+        [SwaggerOperation(
+            Summary = "Registar uma nova transação. [admin, guest]",
+            Description = @"O idTransaction não precisa de ser incluído no body:
+
+            {
+                ""idUser"": 1,
+                ""transactionType"": ""Sell"",
+                ""units"": 7,
+                ""btcTimeStamp"": ""2024-12-22T23:39:30.700""
+            }
+            
+            O timestamp tem de ser o seguinte:2024-12-22T23:39:30.700, por ser o único registo válido da entidade btcTimeStamp na BD."
+        )]
 
         public async Task<ActionResult> AddTransaction([FromBody] Transaction transaction)
         {
@@ -76,20 +74,25 @@ namespace BitcoinApp.Controllers
             return CreatedAtAction(nameof(GetTransaction), new { id = transaction.idTransaction }, transaction);
         }
 
-        /// <remarks>
-        /// O timestamp tem de ser o seguinte:
-        ///
-        ///     {
-        ///        "btcTimeStamp": "2024-12-22T23:39:30.700"
-        ///     }
-        /// Por ser o único registo válido da entidade btcTimeStamp na BD.
-        /// </remarks>
         [HttpPut]
         [Authorize(Policy = "Admin")]
-        [SwaggerOperation(Summary = "Atualizar as informações de uma transação. [admin]", Description = "Permite alterar as informações de uma transação específica existente na BD, por idTransaction.")]
+        [SwaggerOperation(
+            Summary = "Atualizar as informações de uma transação. [admin]", 
+            Description = @"Permite alterar as informações de uma transação específica existente na BD, por idTransaction.
+
+            {
+                ""idTransaction"": 1,
+                ""idUser"": 1,
+                ""transactionType"": ""Sell"",
+                ""units"": 7,
+                ""btcTimeStamp"": ""2024-12-22T23:39:30.700""
+            }
+            
+            O timestamp tem de ser o seguinte:2024-12-22T23:39:30.700, por ser o único registo válido da entidade btcTimeStamp na BD."
+        )]
 
         public async Task<IActionResult> UpdateTransaction([FromBody] Transaction updatedTransaction)
-        {
+    {
             if (updatedTransaction == null || updatedTransaction.idTransaction == 0)
             {
                 return BadRequest("Invalid transaction data.");
@@ -104,7 +107,6 @@ namespace BitcoinApp.Controllers
 
             return NoContent();
         }
-
 
         [HttpDelete("{id}")]
         [Authorize(Policy = "Admin")]
