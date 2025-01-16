@@ -31,7 +31,7 @@ namespace BitcoinApp.Models
         /// Data e hora da transação no formato ISO 8601.
         /// Exemplo: 2024-12-22T23:39:30.700
         /// </summary>
-        [SwaggerExampleValue("3fa85f64-5717-4562-b3fc-2c963f66afa6")]
+        ///[SwaggerExampleValue("3fa85f64-5717-4562-b3fc-2c963f66afa6")]
         public DateTime btcTimeStamp { get; set; }
     }
 }
